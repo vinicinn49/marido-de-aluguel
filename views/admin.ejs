@@ -3,73 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin | Marido de Aluguel</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Painel Administrativo | Marido de Aluguel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="admin-body">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+            --light: #f4f7f6;
+        }
 
-    <header class="admin-header">
-        <div class="admin-nav">
-            <h1>Painel Admin</h1>
-            <a href="/logout" class="btn-logout">Sair</a>
-        </div>
-    </header>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        nav {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav h1 { margin: 0; font-size: 1.5rem; }
+        
+        .logout-btn {
+            color: white;
+            text-decoration: none;
+            background: var(--danger);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* Container Principal */
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Cards de Resumo */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card i { font-size: 2rem; color: var(--secondary); }
+        .card-info h3 { margin: 0; font-size: 1.2rem; }
+        .card-info p { margin: 0; color: #7f8c8d; }
+
+        /* Tabela */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        th { background: #fafafa; color: var(--primary); }
+
+        /* Badges de Status */
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-Pendente { background: #ffeaa7; color: #d6a316; }
+        .status-Andamento { background: #fab1a0; color: #e17055; }
+        .status-Finalizado { background: #55efc4; color: #00b894; }
+
+        /* Botão de Status */
+        select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-update {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            nav { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h1><i class="fas fa-tools"></i> Painel Admin</h1>
+        <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </nav>
 
     <div class="container">
-        <div class="filter-section">
-            <form method="GET" action="/admin" id="filterForm">
-                <label for="statusFilter"><i class="fa-solid fa-filter"></i> Filtrar pedidos:</label>
-                <select name="status" id="statusFilter" onchange="this.form.submit()">
-                    <option value="%" <%= filter == '%' ? 'selected' : '' %>>Todos os registros</option>
-                    <option value="Pendente" <%= filter == 'Pendente' ? 'selected' : '' %>>🟡 Pendentes</option>
-                    <option value="Aceito" <%= filter == 'Aceito' ? 'selected' : '' %>>🔵 Aceitos</option>
-                    <option value="Concluido" <%= filter == 'Concluido' ? 'selected' : '' %>>🟢 Concluídos</option>
-                </select>
-            </form>
+        <div class="stats">
+            <div class="card">
+                <i class="fas fa-clipboard-list"></i>
+                <div class="card-info">
+                    <h3><%= pedidos.length %></h3>
+                    <p>Total de Pedidos</p>
+                </div>
+            </div>
+            <div class="card">
+                <i class="fas fa-clock"></i>
+                <div class="card-info">
+                    <h3><%= pedidos.filter(p => p.status === 'Pendente').length %></h3>
+                    <p>Pendentes</p>
+                </div>
+            </div>
         </div>
 
-        <div class="pedidos-list">
-            <% if (pedidos.length === 0) { %>
-                <div class="card" style="text-align: center; color: var(--text-muted);">
-                    <p>Nenhum pedido encontrado.</p>
-                </div>
-            <% } %>
-
-            <% pedidos.forEach(p => { %>
-                <div class="pedido-card-v2">
-                    <div class="pedido-header">
-                        <span class="pedido-id">#<%= p.id %></span>
-                        <span class="status-badge <%= p.status %>"><%= p.status %></span>
-                    </div>
-
-                    <div class="pedido-body">
-                        <h3><%= p.nome %></h3>
-                        <p class="problema-texto">"<%= p.problema %>"</p>
-                        
-                        <div class="info-row">
-                            <i class="fa-solid fa-calendar-day"></i>
-                            <span><%= new Date(p.created_at).toLocaleDateString('pt-BR') %></span>
-                        </div>
-                    </div>
-
-                    <div class="pedido-actions">
-                        <a href="https://wa.me/55<%= p.telefone.replace(/\D/g,'') %>" target="_blank" class="btn-whatsapp-v2">
-                            <i class="fa-brands fa-whatsapp"></i> Contatar Cliente
-                        </a>
-                        
-                        <form action="/admin/status" method="POST" class="status-update-form">
-                            <input type="hidden" name="id" value="<%= p.id %>">
-                            <select name="status" class="select-small">
-                                <option value="Pendente" <%= p.status == 'Pendente' ? 'selected' : '' %>>Pendente</option>
-                                <option value="Aceito" <%= p.status == 'Aceito' ? 'selected' : '' %>>Aceito</option>
-                                <option value="Concluido" <%= p.status == 'Concluido' ? 'selected' : '' %>>Concluído</option>
-                            </select>
-                            <button type="submit" class="btn-update">OK</button>
-                        </form>
-                    </div>
-                </div>
-            <% }) %>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Cliente</th>
+                        <th>Contacto</th>
+                        <th>Problema</th>
+                        <th>Status</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pedidos.forEach(pedido => { %>
+                        <tr>
+                            <td><%= new Date(pedido.created_at).toLocaleDateString('pt-BR') %></td>
+                            <td><strong><%= pedido.nome %></strong></td>
+                            <td>
+                                <a href="https://wa.me/55<%= pedido.telefone.replace(/\D/g,'') %>" target="_blank" style="text-decoration: none; color: var(--success);">
+                                    <i class="fab fa-whatsapp"></i> <%= pedido.telefone %>
+                                </a>
+                            </td>
+                            <td><%= pedido.problema %></td>
+                            <td>
+                                <span class="badge status-<%= pedido.status %>">
+                                    <%= pedido.status %>
+                                </span>
+                            </td>
+                            <td>
+                                <form action="/admin/status" method="POST" style="display: inline-flex; gap: 5px;">
+                                    <input type="hidden" name="id" value="<%= pedido.id %>">
+                                    <select name="status">
+                                        <option value="Pendente" <%= pedido.status === 'Pendente' ? 'selected' : '' %>>Pendente</option>
+                                        <option value="Andamento" <%= pedido.status === 'Andamento' ? 'selected' : '' %>>Em Andamento</option>
+                                        <option value="Finalizado" <%= pedido.status === 'Finalizado' ? 'selected' : '' %>>Finalizado</option>
+                                    </select>
+                                    <button type="submit" class="btn-update">OK</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
         </div>
     </div>
 
