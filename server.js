@@ -3,12 +3,26 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
+const fs = require('fs'); // Novo: Para lidar com pastas no servidor
 
 const app = express();
 
-// --- AJUSTE PARA DEPLOY: CAMINHO DO BANCO ---
-const dbPath = path.resolve(__dirname, 'database', 'database.db');
-const db = new sqlite3.Database(dbPath);
+// --- AJUSTE PARA DEPLOY: GARANTIR PASTA E BANCO ---
+const dir = path.resolve(__dirname, 'database');
+
+// Se a pasta 'database' não existir no servidor, ele cria agora
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir, { recursive: true });
+}
+
+const dbPath = path.join(dir, 'database.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+        console.error("❌ Erro ao abrir o banco:", err.message);
+    } else {
+        console.log("🗄️ Banco de Dados conectado com sucesso!");
+    }
+});
 
 // Configurações
 app.set('view engine', 'ejs');
@@ -92,11 +106,8 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-// --- AJUSTE PARA DEPLOY: PORTA DINÂMICA ---
+// Iniciar o Servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log('------------------------------------------');
-    console.log(`✅ Servidor rodando na porta ${PORT}`);
-    console.log('🚀 Pronto para receber orçamentos!');
-    console.log('------------------------------------------');
-});
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+}); 
