@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparos Pro | Marido de Aluguel Profissional</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="hero">
+        <div class="container">
+            <div class="badge-topo">✨ Atendimento Rápido</div>
+            <h1>Reparos Residenciais sem Dor de Cabeça</h1>
+            <p>Profissional multitarefas para consertos elétricos, hidráulicos e manutenções em geral.</p>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        
+        <% if (success) { %>
+            <div class="alert-success">
+                <i class="fa-solid fa-circle-check"></i>
+                <div>
+                    <strong>Pedido enviado!</strong>
+                    <p>Em instantes entraremos em contato via WhatsApp.</p>
+                </div>
+            </div>
+        <% } %>
+
+        <section class="servicos-preview">
+            <div class="servico-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Elétrica</span>
+            </div>
+            <div class="servico-item">
+                <i class="fa-solid fa-droplet"></i>
+                <span>Hidráulica</span>
+            </div>
+            <div class="servico-item">
+                <i class="fa-solid fa-paint-roller"></i>
+                <span>Reparos</span>
+            </div>
+            <div class="servico-item">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Montagem</span>
+            </div>
+        </section>
+
+        <div class="card form-card">
+            <div class="form-header">
+                <h2>Solicitar Orçamento</h2>
+                <p>Preencha abaixo e receba uma estimativa de preço.</p>
+            </div>
+            
+            <form action="/enviar-pedido" method="POST">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user"></i> Nome Completo</label>
+                    <input type="text" name="nome" placeholder="Ex: João Silva" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fa-solid fa-phone"></i> WhatsApp com DDD</label>
+                    <input type="tel" name="telefone" id="telInput" placeholder="Ex: 11999998888" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fa-solid fa-comment-dots"></i> O que você precisa?</label>
+                    <textarea name="problema" rows="4" placeholder="Descreva brevemente o serviço (ex: trocar torneira, instalar suporte de TV...)" required></textarea>
+                </div>
+
+                <button type="submit" class="btn-principal">
+                    Enviar Solicitação <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+            <p class="privacidade"><i class="fa-solid fa-lock"></i> Seus dados estão seguros e serão usados apenas para este contato.</p>
+        </div>
+
+        <section class="beneficios">
+            <div class="beneficio-row">
+                <i class="fa-solid fa-check"></i>
+                <p>Orçamento gratuito e sem compromisso</p>
+            </div>
+            <div class="beneficio-row">
+                <i class="fa-solid fa-check"></i>
+                <p>Preço justo e transparência</p>
+            </div>
+            <div class="beneficio-row">
+                <i class="fa-solid fa-check"></i>
+                <p>Ferramentas profissionais e limpeza após o serviço</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="footer-cliente">
+        <p>&copy; 2024 Marido de Aluguel Profissional</p>
+        <p>Atendendo sua região com qualidade.</p>
+    </footer>
+
+    <script>
+        const telInput = document.getElementById('telInput');
+        telInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>

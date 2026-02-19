@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Administrativo</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card" style="margin-top: 100px;">
+            <h2 style="text-align: center;">Acesso Restrito</h2>
+            <% if (error) { %>
+                <p style="color: red; text-align: center;">Usuário ou senha inválidos!</p>
+            <% } %>
+            <form action="/login" method="POST">
+                <input type="text" name="user" placeholder="Usuário" required>
+                <input type="password" name="pass" placeholder="Senha" required>
+                <button type="submit" style="background: #34495e;">Entrar no Painel</button>
+            </form>
+            <p style="text-align: center;"><a href="/">Voltar para o site</a></p>
+        </div>
+    </div>
+</body>
+</html>

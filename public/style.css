@@ -1,0 +1,411 @@
+/* Variáveis de Cores Minimalistas */
+:root {
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --primary: #10b981;    /* Verde Esmeralda Moderno */
+    --primary-hover: #059669;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Remove brilho ao clicar no mobile */
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Header mais elegante */
+header {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 1rem;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Container Responsivo */
+.container {
+    width: 100%;
+    max-width: 480px; /* Largura ideal para Mobile */
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+/* Card Minimalista */
+.card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.card h2, .card h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Inputs Modernos */
+input, textarea, select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #fcfcfc;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    background-color: #fff;
+}
+
+/* Botão Mobile-Friendly */
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    width: 100%;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/* Status Badges no Admin */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.Pendente { background: #fef3c7; color: #92400e; }
+.Aceito { background: #dcfce7; color: #166534; }
+.Concluido { background: #e0f2fe; color: #075985; }
+.Recusado { background: #fee2e2; color: #991b1b; }
+
+/* Dashboard Admin - Estilo Feed Mobile */
+.pedido-card {
+    background: var(--card-bg);
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.admin-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.btn-whatsapp {
+    display: inline-block;
+    background: #25d366;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 380px) {
+    .container { padding: 1rem; }
+    header h1 { font-size: 1.2rem; }
+}
+
+/* Ajustes específicos para o Admin */
+.admin-header {
+    background: #1e293b;
+    color: white;
+}
+.admin-header h1 { color: white; }
+
+.btn-logout {
+    color: #f8fafc;
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border: 1px solid #334155;
+    border-radius: 6px;
+}
+
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-section label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Card Estilo Feed Mobile */
+.pedido-card-v2 {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.pedido-id {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+.pedido-body h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.problema-texto {
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 8px;
+    font-style: italic;
+    font-size: 0.95rem;
+    margin: 0.5rem 0;
+}
+
+.info-row {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 10px 0;
+}
+
+.pedido-actions {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.btn-whatsapp-v2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #25d366;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.status-update-form {
+    display: flex;
+    gap: 8px;
+}
+
+.select-small {
+    margin: 0;
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 8px;
+}
+
+.btn-update {
+    width: auto;
+    margin: 0;
+    padding: 0 15px;
+    background: #334155;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: white;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border: none;
+}
+
+.hero h1 {
+    color: white;
+    font-size: 1.8rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.badge-topo {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Grid de Serviços */
+.servicos-preview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: -2.5rem; /* Efeito flutuante sobre o hero */
+    margin-bottom: 2rem;
+}
+
+.servico-item {
+    background: white;
+    padding: 15px 5px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.servico-item i {
+    display: block;
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.servico-item span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* Formulário Profissional */
+.form-card {
+    border-top: 4px solid var(--primary);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-main);
+}
+
+.btn-principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+}
+
+.privacidade {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Benefícios */
+.beneficios {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.beneficio-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.beneficio-row i {
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.beneficio-row p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+/* Footer */
+.footer-cliente {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.alert-success {
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    color: #166534;
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.alert-success p { margin: 0; font-size: 0.9rem; }
+
+/* Ajuste Responsivo para o Grid de Serviços */
+@media (max-width: 400px) {
+    .servicos-preview { grid-template-columns: repeat(2, 1fr); }
+}

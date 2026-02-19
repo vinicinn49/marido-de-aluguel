@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | Marido de Aluguel</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <header class="admin-header">
+        <div class="admin-nav">
+            <h1>Painel Admin</h1>
+            <a href="/logout" class="btn-logout">Sair</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="filter-section">
+            <form method="GET" action="/admin" id="filterForm">
+                <label for="statusFilter"><i class="fa-solid fa-filter"></i> Filtrar pedidos:</label>
+                <select name="status" id="statusFilter" onchange="this.form.submit()">
+                    <option value="%" <%= filter == '%' ? 'selected' : '' %>>Todos os registros</option>
+                    <option value="Pendente" <%= filter == 'Pendente' ? 'selected' : '' %>>🟡 Pendentes</option>
+                    <option value="Aceito" <%= filter == 'Aceito' ? 'selected' : '' %>>🔵 Aceitos</option>
+                    <option value="Concluido" <%= filter == 'Concluido' ? 'selected' : '' %>>🟢 Concluídos</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="pedidos-list">
+            <% if (pedidos.length === 0) { %>
+                <div class="card" style="text-align: center; color: var(--text-muted);">
+                    <p>Nenhum pedido encontrado.</p>
+                </div>
+            <% } %>
+
+            <% pedidos.forEach(p => { %>
+                <div class="pedido-card-v2">
+                    <div class="pedido-header">
+                        <span class="pedido-id">#<%= p.id %></span>
+                        <span class="status-badge <%= p.status %>"><%= p.status %></span>
+                    </div>
+
+                    <div class="pedido-body">
+                        <h3><%= p.nome %></h3>
+                        <p class="problema-texto">"<%= p.problema %>"</p>
+                        
+                        <div class="info-row">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span><%= new Date(p.created_at).toLocaleDateString('pt-BR') %></span>
+                        </div>
+                    </div>
+
+                    <div class="pedido-actions">
+                        <a href="https://wa.me/55<%= p.telefone.replace(/\D/g,'') %>" target="_blank" class="btn-whatsapp-v2">
+                            <i class="fa-brands fa-whatsapp"></i> Contatar Cliente
+                        </a>
+                        
+                        <form action="/admin/status" method="POST" class="status-update-form">
+                            <input type="hidden" name="id" value="<%= p.id %>">
+                            <select name="status" class="select-small">
+                                <option value="Pendente" <%= p.status == 'Pendente' ? 'selected' : '' %>>Pendente</option>
+                                <option value="Aceito" <%= p.status == 'Aceito' ? 'selected' : '' %>>Aceito</option>
+                                <option value="Concluido" <%= p.status == 'Concluido' ? 'selected' : '' %>>Concluído</option>
+                            </select>
+                            <button type="submit" class="btn-update">OK</button>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+</body>
+</html>
