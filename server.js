@@ -3,24 +3,36 @@ const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
-const fs = require('fs'); // Novo: Para lidar com pastas no servidor
+const fs = require('fs');
 
 const app = express();
 
-// --- AJUSTE PARA DEPLOY: GARANTIR PASTA E BANCO ---
-const dir = path.resolve(__dirname, 'database');
+// --- ESTRATÉGIA DE CONEXÃO COM O BANCO ---
+// 1. Tenta usar a pasta do volume montado no Railway (/database)
+// 2. Se falhar, usa a pasta dentro do projeto (/app/database)
+let dbDir = '/database'; 
 
-// Se a pasta 'database' não existir no servidor, ele cria agora
-if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir, { recursive: true });
+if (!fs.existsSync(dbDir)) {
+    dbDir = path.join(__dirname, 'database');
 }
 
-const dbPath = path.join(dir, 'database.db');
-const db = new sqlite3.Database(dbPath, (err) => {
+// Garante que a pasta escolhida existe
+if (!fs.existsSync(dbDir)) {
+    try {
+        fs.mkdirSync(dbDir, { recursive: true });
+    } catch (e) {
+        console.log("Aviso: Usando diretório temporário para o banco.");
+        dbDir = '/tmp'; // Último recurso caso tudo falhe
+    }
+}
+
+const dbPath = path.join(dbDir, 'database.db');
+
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
-        console.error("❌ Erro ao abrir o banco:", err.message);
+        console.error("❌ ERRO CRÍTICO AO ABRIR O BANCO:", err.message);
     } else {
-        console.log("🗄️ Banco de Dados conectado com sucesso!");
+        console.log("🗄️ Banco de Dados conectado em:", dbPath);
     }
 });
 
@@ -36,7 +48,6 @@ app.use(session({
 
 // Inicialização do Banco de Dados
 db.serialize(async () => {
-    // Tabela de Pedidos
     db.run(`CREATE TABLE IF NOT EXISTS pedidos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
@@ -46,7 +57,6 @@ db.serialize(async () => {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
 
-    // Tabela Admin e Usuário Padrão
     db.run(`CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, user TEXT, pass TEXT)`);
     
     const hash = await bcrypt.hash('admin123', 10);
@@ -109,5 +119,8 @@ app.get('/logout', (req, res) => {
 // Iniciar o Servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando na porta ${PORT}`);
-}); 
+    console.log('------------------------------------------');
+    console.log(`✅ Servidor rodando na porta ${PORT}`);
+    console.log('🚀 Pronto para o sucesso!');
+    console.log('------------------------------------------');
+});
