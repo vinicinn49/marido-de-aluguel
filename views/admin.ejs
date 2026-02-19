@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Painel Administrativo | Marido de Aluguel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -13,147 +13,188 @@
             --warning: #f1c40f;
             --danger: #e74c3c;
             --light: #f4f7f6;
+            --white: #ffffff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--light);
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            color: var(--primary);
         }
 
-        /* Navbar */
+        /* Navbar compacta para celular */
         nav {
             background: var(--primary);
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        nav h1 { margin: 0; font-size: 1.5rem; }
+        nav h1 { margin: 0; font-size: 1.2rem; }
         
         .logout-btn {
             color: white;
             text-decoration: none;
             background: var(--danger);
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
-
-        /* Container Principal */
-        .container {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        /* Cards de Resumo */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .card i { font-size: 2rem; color: var(--secondary); }
-        .card-info h3 { margin: 0; font-size: 1.2rem; }
-        .card-info p { margin: 0; color: #7f8c8d; }
-
-        /* Tabela */
-        .table-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        th, td {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        th { background: #fafafa; color: var(--primary); }
-
-        /* Badges de Status */
-        .badge {
-            padding: 5px 10px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-size: 0.8rem;
             font-weight: bold;
-            text-transform: uppercase;
+        }
+
+        .container {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Stats em Grid que se ajusta */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .stat-card i { font-size: 1.5rem; color: var(--secondary); margin-bottom: 0.5rem; display: block; }
+        .stat-card h3 { margin: 0; font-size: 1.4rem; }
+        .stat-card p { margin: 0; color: #7f8c8d; font-size: 0.8rem; }
+
+        /* Estilo da Tabela que vira Card no Celular */
+        .table-container {
+            background: transparent;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        /* Esconde o cabeçalho no celular */
+        @media screen and (max-width: 600px) {
+            thead { display: none; }
+            
+            tr {
+                display: block;
+                background: var(--white);
+                margin-bottom: 1rem;
+                border-radius: 12px;
+                padding: 1rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                position: relative;
+                border-left: 5px solid var(--secondary);
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #f0f0f0;
+                font-size: 0.9rem;
+            }
+
+            td:last-child { border-bottom: none; }
+
+            /* Adiciona o título da coluna antes do valor */
+            td::before {
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                color: #7f8c8d;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+            }
+
+            .badge { display: inline-block; }
+            form { justify-content: flex-end; margin-top: 10px; }
+        }
+
+        /* Desktop Style */
+        @media screen and (min-width: 601px) {
+            .table-container {
+                background: var(--white);
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            }
+            th, td { padding: 1rem; border-bottom: 1px solid #eee; }
+            th { background: #fafafa; }
+            .stats { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
         }
         .status-Pendente { background: #ffeaa7; color: #d6a316; }
         .status-Andamento { background: #fab1a0; color: #e17055; }
         .status-Finalizado { background: #55efc4; color: #00b894; }
 
-        /* Botão de Status */
+        /* Inputs e Botões Mobile Friendly */
         select {
-            padding: 5px;
-            border-radius: 4px;
+            padding: 8px;
+            border-radius: 8px;
             border: 1px solid #ddd;
+            font-size: 16px; /* Evita zoom automático no iPhone */
+            background: #fff;
         }
 
         .btn-update {
             background: var(--secondary);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
             cursor: pointer;
         }
 
-        @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            nav { padding: 1rem; }
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #25D366;
+            color: white !important;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <h1><i class="fas fa-tools"></i> Painel Admin</h1>
-        <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        <h1><i class="fas fa-tools"></i> Admin</h1>
+        <a href="/logout" class="logout-btn">Sair</a>
     </nav>
 
     <div class="container">
         <div class="stats">
-            <div class="card">
-                <i class="fas fa-clipboard-list"></i>
-                <div class="card-info">
-                    <h3><%= pedidos.length %></h3>
-                    <p>Total de Pedidos</p>
-                </div>
+            <div class="stat-card">
+                <i class="fas fa-list"></i>
+                <h3><%= pedidos.length %></h3>
+                <p>Total</p>
             </div>
-            <div class="card">
-                <i class="fas fa-clock"></i>
-                <div class="card-info">
-                    <h3><%= pedidos.filter(p => p.status === 'Pendente').length %></h3>
-                    <p>Pendentes</p>
-                </div>
+            <div class="stat-card">
+                <i class="fas fa-hourglass-half"></i>
+                <h3><%= pedidos.filter(p => p.status === 'Pendente').length %></h3>
+                <p>Pendentes</p>
             </div>
         </div>
 
@@ -172,25 +213,25 @@
                 <tbody>
                     <% pedidos.forEach(pedido => { %>
                         <tr>
-                            <td><%= new Date(pedido.created_at).toLocaleDateString('pt-BR') %></td>
-                            <td><strong><%= pedido.nome %></strong></td>
-                            <td>
-                                <a href="https://wa.me/55<%= pedido.telefone.replace(/\D/g,'') %>" target="_blank" style="text-decoration: none; color: var(--success);">
-                                    <i class="fab fa-whatsapp"></i> <%= pedido.telefone %>
+                            <td data-label="Data"><%= new Date(pedido.created_at).toLocaleDateString('pt-BR') %></td>
+                            <td data-label="Cliente"><strong><%= pedido.nome %></strong></td>
+                            <td data-label="Contacto">
+                                <a href="https://wa.me/55<%= pedido.telefone.replace(/\D/g,'') %>" target="_blank" class="whatsapp-link">
+                                    <i class="fab fa-whatsapp"></i> Conversar
                                 </a>
                             </td>
-                            <td><%= pedido.problema %></td>
-                            <td>
+                            <td data-label="Problema"><%= pedido.problema %></td>
+                            <td data-label="Status">
                                 <span class="badge status-<%= pedido.status %>">
                                     <%= pedido.status %>
                                 </span>
                             </td>
-                            <td>
-                                <form action="/admin/status" method="POST" style="display: inline-flex; gap: 5px;">
+                            <td data-label="Ação">
+                                <form action="/admin/status" method="POST" style="display: flex; gap: 5px;">
                                     <input type="hidden" name="id" value="<%= pedido.id %>">
                                     <select name="status">
                                         <option value="Pendente" <%= pedido.status === 'Pendente' ? 'selected' : '' %>>Pendente</option>
-                                        <option value="Andamento" <%= pedido.status === 'Andamento' ? 'selected' : '' %>>Em Andamento</option>
+                                        <option value="Andamento" <%= pedido.status === 'Andamento' ? 'selected' : '' %>>Andamento</option>
                                         <option value="Finalizado" <%= pedido.status === 'Finalizado' ? 'selected' : '' %>>Finalizado</option>
                                     </select>
                                     <button type="submit" class="btn-update">OK</button>
